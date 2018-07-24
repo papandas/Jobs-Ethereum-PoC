@@ -7,6 +7,7 @@ contract Jobs {
   enum ExpertiseType {Engineer, GraphicDesigner, WebDeveloper, Driver, Manager}
 
   struct Job{
+    uint256 index;
     bool active;
     address addr;
     AccountType accType;
@@ -17,21 +18,20 @@ contract Jobs {
     uint256 salary;
   }
 
-  mapping(address => Job) public jobs;
+  mapping(address => bool) public seekers;
+  mapping(uint256 => Job) public jobs;
 
-  address public owner;
+  uint256 public jobIndex;
 
   string public version = '0.0.1';
 
-  constructor() public {
-    owner = msg.sender;
-  }
-
   function SignUp(AccountType _accType, string _name, ExpertiseType _expertise, uint256 _year, uint256 _Dow, uint256 _salary) public {
-    require(jobs[msg.sender].active != true);
+    require(!seekers[msg.sender]);
 
-    jobs[msg.sender] = Job(true, msg.sender, _accType, _name, _expertise, _year, _Dow, _salary);
+    jobIndex++;
+    jobs[jobIndex] = Job(jobIndex, true, msg.sender, _accType, _name, _expertise, _year, _Dow, _salary);
 
+    seekers[msg.sender] = true;
   }
 
 }
