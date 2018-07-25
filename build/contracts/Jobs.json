@@ -2845,11 +2845,11 @@
     "version": "0.4.24+commit.e67f0147.Emscripten.clang"
   },
   "networks": {
-    "5777": {
+    "4": {
       "events": {},
       "links": {},
-      "address": "0xaea41c78b9d99b0955ec084a2e8a6a0d8973d803",
-      "transactionHash": "0x624b31ef6899fcc727db35f921c3391efa8d86abb02369a6dcb929805df5dbaa"
+      "address": "0x54D6f4fd00D0d673a52C7C529b18991130e79B29",
+      "transactionHash": "0x66b4e947a9ca815ae6fe3407f5795d4d37cba860e0a2da22e2aff0483fcf586d"
     }
   },
   "schemaVersion": "2.0.1",
