@@ -192,33 +192,59 @@ App = {
             let match = new Array();
             let str2 = '';
 
+            App.seekerListArray.sort(function (a, b) {
+              return parseFloat(b.salary) - parseFloat(a.salary); // Decending
+              //return parseFloat(a.salary) - parseFloat(b.salary); // Assending
+            });
+
             for (let j = 0; j < App.seekerListArray.length; j++) {
 
-              let lookForAccountType = App.myProfile.AccountType == 0 ? 1:0;
-
-              if(lookForAccountType == App.seekerListArray[j].AccountType && App.myProfile.ExpertiseType == App.seekerListArray[j].ExpertiseType){
+              let lookForAccountType = App.myProfile.AccountType == 0 ? 1 : 0;
+              //console.log(j, App.seekerListArray[j].name, App.seekerListArray[j].ExpertiseType)
+              if (lookForAccountType == App.seekerListArray[j].AccountType && App.myProfile.ExpertiseType == App.seekerListArray[j].ExpertiseType) {
                 match.push(App.seekerListArray[j]);
-                str2 += '<tr><td colspan="2"><table border="0" width="80%" align="center"><tr> <td width="300">Comparision:</td> <td>You</td> <td>&nbsp;</td> <td>'+ App.seekerListArray[j].name +'</td> </tr></table></td></tr>';
-                str2 += '<tr><td colspan="2"><table border="0" width="80%" align="center"><tr> <td width="300">Experience year:</td> <td>'+App.myProfile.year+'</td> <td>'+App.ReturnGreateThenLessThen(parseInt(App.myProfile.year), parseInt(App.seekerListArray[j].year))+'</td> <td>'+ App.seekerListArray[j].year +'</td> </tr></table></td></tr>';
-                str2 += '<tr><td colspan="2"><table border="0" width="80%" align="center"><tr> <td width="300">Working days/week:</td> <td>'+App.myProfile.DoW+'</td> <td>'+App.ReturnGreateThenLessThen(parseInt(App.myProfile.DoW), parseInt(App.seekerListArray[j].DoW))+'</td> <td>'+ App.seekerListArray[j].DoW +'</td> </tr></table></td></tr>';
-                str2 += '<tr><td colspan="2"><table border="0" width="80%" align="center"><tr> <td width="300">Monthly Salary $</td> <td>'+App.myProfile.salary+'</td> <td>'+App.ReturnGreateThenLessThen(parseInt(App.myProfile.salary), parseInt(App.seekerListArray[j].salary))+'</td> <td>'+ App.seekerListArray[j].salary +'</td> </tr></table></td></tr>';
+                
+                if(App.myProfile.AccountType == 0){
+                  let rank = 0;
+                  for (let k = 0; k < App.seekerListArray.length; k++) {
+                    if (App.seekerListArray[k].AccountType == 0 && App.myProfile.ExpertiseType == App.seekerListArray[k].ExpertiseType) {
+                      //console.log(k, App.seekerListArray[j].name, "");
+                      if(App.account == App.seekerListArray[k].address){
+                        if (rank < 2){
+                          str2 += '<tr><td colspan="2">You are top 2 of '+App.seekerListArray[j].name+' possible list.</td></tr>'
+                        }else{
+                          str2 += '<tr><td colspan="2">You out top 2 of '+App.seekerListArray[j].name+' possible list.</td></tr>'
+                        }
+                      }
+                      
+                      rank++;
+                    }
+                  }
+                }
+
+                str2 += '<tr><td colspan="2"><table border="0" width="80%" align="center"><tr> <td width="300">Comparision:</td> <td>You</td> <td>&nbsp;</td> <td>' + App.seekerListArray[j].name + '</td> </tr></table></td></tr>';
+                str2 += '<tr><td colspan="2"><table border="0" width="80%" align="center"><tr> <td width="300">Experience year:</td> <td>' + App.myProfile.year + '</td> <td>' + App.ReturnGreateThenLessThen(parseInt(App.myProfile.year), parseInt(App.seekerListArray[j].year)) + '</td> <td>' + App.seekerListArray[j].year + '</td> </tr></table></td></tr>';
+                str2 += '<tr><td colspan="2"><table border="0" width="80%" align="center"><tr> <td width="300">Working days/week:</td> <td>' + App.myProfile.DoW + '</td> <td>' + App.ReturnGreateThenLessThen(parseInt(App.myProfile.DoW), parseInt(App.seekerListArray[j].DoW)) + '</td> <td>' + App.seekerListArray[j].DoW + '</td> </tr></table></td></tr>';
+                str2 += '<tr><td colspan="2"><table border="0" width="80%" align="center"><tr> <td width="300">Monthly Salary $</td> <td>' + App.myProfile.salary + '</td> <td>' + App.ReturnGreateThenLessThen(parseInt(App.myProfile.salary), parseInt(App.seekerListArray[j].salary)) + '</td> <td>' + App.seekerListArray[j].salary + '</td> </tr></table></td></tr>';
                 str2 += '<tr><td colspan="2"><hr/></td></tr>';
               }
 
+
+
             }
 
-            
 
-            if(match.length > 0){
+
+            if (match.length > 0) {
               str += '<tr><td colspan="2"><hr/></td></tr>';
-              str += '<tr><th colspan="2">Report found ' + match.length + ' ' + (App.myProfile.AccountType == 0 ? 'recruiter':'candidate') + '</th></tr>';
+              str += '<tr><th colspan="2">Report found ' + match.length + ' ' + (App.myProfile.AccountType == 0 ? 'recruiter' : 'candidate') + '</th></tr>';
               str += str2;
-              
+
             }
 
             /////////////////////////////////////
 
-            
+
             // END
             str += '</table>'
 
@@ -295,13 +321,13 @@ App = {
     //JobsInstance
   },
 
-  ReturnGreateThenLessThen: function(a, b){
+  ReturnGreateThenLessThen: function (a, b) {
     let str = '=';
-    if(a > b){
+    if (a > b) {
       str = '>'
     }
 
-    if(a < b){
+    if (a < b) {
       str = '<'
     }
 
