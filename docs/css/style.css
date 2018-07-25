@@ -1,0 +1,32 @@
+body, a{
+    margin: 0;
+    padding: 0;
+    background-color: #d8d8d8;
+    font-family: "Roboto";
+    font-size: 18px;
+    text-align: center;
+    text-decoration: none;
+}
+
+#maincontainer{
+    margin: 0 auto;
+    padding: 0 auto;
+
+}
+
+#row{
+    padding: 0px;
+    margin: 0;
+}
+
+.accountsDiv{
+    background-color: #5b9bd5;
+    color: white;
+    padding: 5px 0px;
+    text-align: center;
+}
+
+.erroralert{
+    color: red;
+    font-weight: bold;
+}
