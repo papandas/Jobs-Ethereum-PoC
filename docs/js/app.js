@@ -4,6 +4,7 @@ App = {
   contracts: {},
   account: '0x0',
   loading: false,
+  isAdmin: false,
   seekerListArray: new Array(),
 
   init: function () {
@@ -52,7 +53,6 @@ App = {
     web3.eth.getCoinbase(function (err, account) {
       if (err === null) {
         App.account = account;
-
         console.log("Account Address:", 'https://rinkeby.etherscan.io/address/' + account);
       }
     });
@@ -60,14 +60,16 @@ App = {
     App.LoadLandingPage();
 
 
-
-
-
   },
 
   LoadLandingPage: function () {
     App.contracts.Jobs.deployed().then(function (instance) {
       JobsInstance = instance;
+      return JobsInstance.admin();
+    }).then((admin)=>{
+      if(App.account === admin){
+        App.isAdmin = true;
+      }
       return JobsInstance.seekers(App.account);
     }).then((isExist) => {
       if (isExist) {
@@ -117,8 +119,10 @@ App = {
             console.log(App.myProfile);
 
             let str = '';
-            str += '<div id="accountHolder" class="accountsDiv">Your Account: <a href="https://rinkeby.etherscan.io/address/' + App.account + '" target="_blank">' + App.account + '</a></div>';
-            str += '<table border="0" width="99.99%">';
+            str += '<div id="accountHolder" class="accountsDiv">Your Account: <a href="https://rinkeby.etherscan.io/address/' + App.account + '" target="_blank">' + App.account + '</a>';
+            str += '<button type="button" onclick="App.LoadResetDataPage()">Reset</button>';
+            if (App.isAdmin) { str += '<button type="button" onclick="App.AllEmptyData();">Empty Data</button>'; }
+            str += '</div><table border="0" width="99.99%">';
             // Row 1
             str += '<tr><th colspan="2">You are:</th></tr>';
             // Row 2
@@ -203,21 +207,21 @@ App = {
               //console.log(j, App.seekerListArray[j].name, "Acc", App.seekerListArray[j].AccountType, "Exp", App.seekerListArray[j].ExpertiseType)
               if (lookForAccountType == App.seekerListArray[j].AccountType && App.myProfile.ExpertiseType == App.seekerListArray[j].ExpertiseType) {
                 match.push(App.seekerListArray[j]);
-                
-                if(App.myProfile.AccountType == 1){
+
+                if (App.myProfile.AccountType == 1) {
                   let rank = 0;
                   for (let k = 0; k < App.seekerListArray.length; k++) {
                     //
                     if (App.seekerListArray[k].AccountType == 1 && App.myProfile.ExpertiseType == App.seekerListArray[k].ExpertiseType) {
                       //console.log(k, App.seekerListArray[j].name, "");
-                      if(App.account == App.seekerListArray[k].address){
-                        if (rank < 2){
-                          str2 += '<tr><td colspan="2">You are top 2 of '+App.seekerListArray[j].name+' possible list.</td></tr>'
-                        }else{
-                          str2 += '<tr><td colspan="2">You out top 2 of '+App.seekerListArray[j].name+' possible list.</td></tr>'
+                      if (App.account == App.seekerListArray[k].address) {
+                        if (rank < 2) {
+                          str2 += '<tr><td colspan="2">You are top 2 of ' + App.seekerListArray[j].name + ' possible list.</td></tr>'
+                        } else {
+                          str2 += '<tr><td colspan="2">You out top 2 of ' + App.seekerListArray[j].name + ' possible list.</td></tr>'
                         }
                       }
-                      
+
                       rank++;
                     }
                   }
@@ -239,12 +243,11 @@ App = {
             }
 
 
+            str += '<tr><td colspan="2"><hr/></td></tr>';
+            str += '<tr><th colspan="2">Report found ' + match.length + ' ' + (App.myProfile.AccountType == 0 ? 'recruiter' : 'candidate') + '</th></tr>';
 
             if (match.length > 0) {
-              str += '<tr><td colspan="2"><hr/></td></tr>';
-              str += '<tr><th colspan="2">Report found ' + match.length + ' ' + (App.myProfile.AccountType == 0 ? 'recruiter' : 'candidate') + '</th></tr>';
               str += str2;
-
             }
 
             /////////////////////////////////////
@@ -282,8 +285,68 @@ App = {
         })
       }
     }).catch((err) => {
-      console.log("call seekers", err.message);
+      console.log("Invoke", err.message);
     })
+  },
+
+  LoadResetDataPage: function () {
+    $('#loader').hide();
+    $('#content').show();
+    $('#content').empty();
+    $('#content').load('reset.html', function () {
+      //App.myProfile
+      $('#accountHolder').html('Your Account: <a href="https://rinkeby.etherscan.io/address/' + App.account + '" target="_blank">' + App.account + '</a>');
+      $('#youare').val(App.myProfile.AccountType)
+      $('#name').val(App.myProfile.name);
+      $('#expertisetype').val(App.myProfile.ExpertiseType);
+      $('#years').val(App.myProfile.year);
+      $('#days').val(App.myProfile.DoW);
+      $('#salary').val(App.myProfile.salary);
+    })
+  },
+
+  RequestResetData: function () {
+    
+
+    const AccountType = parseInt($('#youare').find(':selected').val());
+    const name = $('#name').val();
+    const ExpertiseType = parseInt($('#expertisetype').find(':selected').val());
+    const ExperiancYear = parseInt($('#years').val())
+    const WorkingDays = parseInt($('#days').val())
+    const Salarys = parseInt($('#salary').val())
+
+    $('#loader').show();
+    $('#content').hide();
+    $('#content').empty();
+
+    if (name && !isNaN(ExperiancYear) && !isNaN(WorkingDays) && !isNaN(Salarys)) {
+      $('#loader').show();
+      $('#content').hide();
+      //console.log(App.myProfile.index,"AccountType:", AccountType, "Name", name, "ExpertiseType", ExpertiseType, "Experianc Year:", ExperiancYear, "WorkingDays", WorkingDays, "Salarys", Salarys);
+      App.contracts.Jobs.deployed().then(function (instance) {
+        JobsInstance = instance;
+        return JobsInstance.UpdateJobs(App.myProfile.index, AccountType, name, ExpertiseType, ExperiancYear, WorkingDays, Salarys, { from: App.account });
+      }).then((receipt) => {
+        console.log("Update", receipt.tx);
+        $('#loader').hide();
+        $('#content').show();
+        $('#content').empty();
+        App.LoadLandingPage();
+      }).catch((err) => {
+        $('#loader').hide();
+        $('#content').show();
+        $('#error').empty();
+        $('#error').html("Reset data request could not be processed. " + err.message);
+        setTimeout(function () { $('#error').empty(); }, 3000);
+      })
+
+    } else {
+      //console.log("Fill up the sign up form correctly.");
+      $('#error').empty();
+      $('#error').html("Kindly, fill up the Reset data form correctly.");
+      setTimeout(function () { $('#error').empty(); }, 3000);
+      //LoadLandingPage
+    }
   },
 
   SignUpRequest: function () {
@@ -293,6 +356,10 @@ App = {
     const ExperiancYear = parseInt($('#years').val())
     const WorkingDays = parseInt($('#days').val())
     const Salarys = parseInt($('#salary').val())
+
+    $('#loader').show();
+    $('#content').hide();
+    $('#content').empty();
 
     if (name && !isNaN(ExperiancYear) && !isNaN(WorkingDays) && !isNaN(Salarys)) {
       $('#loader').show();
@@ -324,6 +391,16 @@ App = {
     }
 
     //JobsInstance
+  },
+
+  AllEmptyData: function (){
+    console.log("Executing Reset Data");
+    App.contracts.Jobs.deployed().then(function (instance) {
+      JobsInstance = instance;
+      return JobsInstance.ResetData({ from: App.account });
+    }).then((receipt) => {
+      console.log("Reset Data", receipt.tx);
+    });
   },
 
   ReturnGreateThenLessThen: function (a, b) {

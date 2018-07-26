@@ -1,0 +1,85 @@
+<table border="0" width="99.99%">
+    <tr>
+        <th colspan="2">
+            <div id="accountHolder" class="accountsDiv"></div>
+        </th>
+    </tr>
+    <tr>
+        <th colspan="2">Sign Up:</th>
+    </tr>
+    <tr>
+        <td width="50%" align="right">
+            I am:
+        </td>
+        <td width="50%" align="left">
+            <select id="youare">
+                <option value="0">Job Seeker</option>
+                <option value="1">Recruiter</option>
+            </select>
+        </td>
+    </tr>
+
+    <tr>
+        <td width="50%" align="right">
+            Name:
+        </td>
+        <td width="50%" align="left">
+            <input id="name" type="text">
+        </td>
+    </tr>
+
+    <tr>
+        <td width="50%" align="right">
+            Expertise:
+        </td>
+        <td width="50%" align="left">
+            <select id="expertisetype">
+                <option value="0">Engineer</option>
+                <option value="1">Graphic Designer</option>
+                <option value="2">Web Developer</option>
+                <option value="3">Driver</option>
+                <option value="4">Manager</option>
+            </select>
+        </td>
+    </tr>
+
+    <tr>
+        <td width="50%" align="right">
+            Experience year:
+        </td>
+        <td width="50%" align="left">
+            <input id="years" type="text">
+        </td>
+    </tr>
+
+    <tr>
+        <td width="50%" align="right">
+            Working days/weeks
+        </td>
+        <td width="50%" align="left">
+            <input id="days" type="text">
+        </td>
+    </tr>
+
+    <tr>
+        <td width="50%" align="right">
+            Monthly Salary $
+        </td>
+        <td width="50%" align="left">
+            <input id="salary" type="text">
+        </td>
+    </tr>
+
+    <tr>
+        <th colspan="2">
+            <button onclick="App.RequestResetData();">Reset Data Now</button>
+            <button onclick="$('#loader').show();$('#content').hide();$('#content').empty();App.LoadLandingPage();">Cancel</button>
+        </th>
+    </tr>
+    <tr>
+        <th colspan="2">
+            <div id="error" class="erroralert"></div>
+        </th>
+    </tr>
+
+</table>

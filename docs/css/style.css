@@ -8,6 +8,19 @@ body, a{
     text-decoration: none;
 }
 
+button {
+    padding: 5px 10px;
+    margin: 0px 5px;
+    font-family: "Roboto";
+    font-size: 15px;
+    font-weight: bold;
+}
+
+input, select{
+    padding: 5px 5px;
+    border: #5b9bd5 2px solid;
+}
+
 #maincontainer{
     margin: 0 auto;
     padding: 0 auto;
