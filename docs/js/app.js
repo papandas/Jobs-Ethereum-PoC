@@ -224,11 +224,14 @@ App = {
                   //console.log("==================");
                 }
 
-                str2 += '<tr><td colspan="2"><table border="0" width="80%" align="center"><tr> <td width="300">Comparision:</td> <td>You</td> <td>&nbsp;</td> <td>' + App.seekerListArray[j].name + '</td> </tr></table></td></tr>';
-                str2 += '<tr><td colspan="2"><table border="0" width="80%" align="center"><tr> <td width="300">Experience year:</td> <td>' + App.myProfile.year + '</td> <td>' + App.ReturnGreateThenLessThen(parseInt(App.myProfile.year), parseInt(App.seekerListArray[j].year)) + '</td> <td>' + App.seekerListArray[j].year + '</td> </tr></table></td></tr>';
-                str2 += '<tr><td colspan="2"><table border="0" width="80%" align="center"><tr> <td width="300">Working days/week:</td> <td>' + App.myProfile.DoW + '</td> <td>' + App.ReturnGreateThenLessThen(parseInt(App.myProfile.DoW), parseInt(App.seekerListArray[j].DoW)) + '</td> <td>' + App.seekerListArray[j].DoW + '</td> </tr></table></td></tr>';
-                str2 += '<tr><td colspan="2"><table border="0" width="80%" align="center"><tr> <td width="300">Monthly Salary $</td> <td>' + App.myProfile.salary + '</td> <td>' + App.ReturnGreateThenLessThen(parseInt(App.myProfile.salary), parseInt(App.seekerListArray[j].salary)) + '</td> <td>' + App.seekerListArray[j].salary + '</td> </tr></table></td></tr>';
+                str2 += '<tr><td colspan="2"><table border="0" width="80%" align="center">';
+                str2 += '<tr> <td width="300">Comparision:</td> <td>You</td> <td>&nbsp;</td> <td>' + App.seekerListArray[j].name + '</td> </tr>';
+                str2 += '<tr> <td width="300">Experience year:</td> <td>' + App.myProfile.year + '</td> <td>' + App.ReturnGreateThenLessThen(parseInt(App.myProfile.year), parseInt(App.seekerListArray[j].year)) + '</td> <td>' + App.seekerListArray[j].year + '</td> </tr>';
+                str2 += '<tr> <td width="300">Working days/week:</td> <td>' + App.myProfile.DoW + '</td> <td>' + App.ReturnGreateThenLessThen(parseInt(App.myProfile.DoW), parseInt(App.seekerListArray[j].DoW)) + '</td> <td>' + App.seekerListArray[j].DoW + '</td> </tr>';
+                str2 += '<tr> <td width="300">Monthly Salary $</td> <td>' + App.myProfile.salary + '</td> <td>' + App.ReturnGreateThenLessThen(parseInt(App.myProfile.salary), parseInt(App.seekerListArray[j].salary)) + '</td> <td>' + App.seekerListArray[j].salary + '</td> </tr>';
+                str2 += '</table></td></tr>';
                 str2 += '<tr><td colspan="2"><hr/></td></tr>';
+
               }
 
 
