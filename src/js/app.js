@@ -200,14 +200,15 @@ App = {
             for (let j = 0; j < App.seekerListArray.length; j++) {
 
               let lookForAccountType = App.myProfile.AccountType == 0 ? 1 : 0;
-              //console.log(j, App.seekerListArray[j].name, App.seekerListArray[j].ExpertiseType)
+              //console.log(j, App.seekerListArray[j].name, "Acc", App.seekerListArray[j].AccountType, "Exp", App.seekerListArray[j].ExpertiseType)
               if (lookForAccountType == App.seekerListArray[j].AccountType && App.myProfile.ExpertiseType == App.seekerListArray[j].ExpertiseType) {
                 match.push(App.seekerListArray[j]);
                 
-                if(App.myProfile.AccountType == 0){
+                if(App.myProfile.AccountType == 1){
                   let rank = 0;
                   for (let k = 0; k < App.seekerListArray.length; k++) {
-                    if (App.seekerListArray[k].AccountType == 0 && App.myProfile.ExpertiseType == App.seekerListArray[k].ExpertiseType) {
+                    //
+                    if (App.seekerListArray[k].AccountType == 1 && App.myProfile.ExpertiseType == App.seekerListArray[k].ExpertiseType) {
                       //console.log(k, App.seekerListArray[j].name, "");
                       if(App.account == App.seekerListArray[k].address){
                         if (rank < 2){
@@ -220,6 +221,7 @@ App = {
                       rank++;
                     }
                   }
+                  //console.log("==================");
                 }
 
                 str2 += '<tr><td colspan="2"><table border="0" width="80%" align="center"><tr> <td width="300">Comparision:</td> <td>You</td> <td>&nbsp;</td> <td>' + App.seekerListArray[j].name + '</td> </tr></table></td></tr>';
